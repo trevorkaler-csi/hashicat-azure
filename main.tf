@@ -104,10 +104,11 @@ resource "azurerm_public_ip" "catapp-pip" {
 
 resource "azurerm_virtual_machine" "catapp" {
   name                = "${var.prefix}-meow"
+  
   location            = var.location
   resource_group_name = azurerm_resource_group.myresourcegroup.name
   vm_size             = var.vm_size
-
+  
   network_interface_ids         = [azurerm_network_interface.catapp-nic.id]
   delete_os_disk_on_termination = "true"
 
@@ -135,7 +136,10 @@ resource "azurerm_virtual_machine" "catapp" {
     disable_password_authentication = false
   }
 
-  tags = {}
+  tags = {
+    Department  = "devops"
+    Billable = "true"
+  }
 
   # Added to allow destroy to work correctly.
   depends_on = [azurerm_network_interface_security_group_association.catapp-nic-sg-ass]
